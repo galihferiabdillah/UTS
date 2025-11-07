@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BookSmart Store — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* sedikit kustom */
+    .card-img { height: 14rem; object-fit: cover; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="text-2xl font-bold text-blue-600">BookSmart</div>
+        <nav class="hidden md:flex gap-4 text-sm text-gray-600">
+          <a href="index.html" class="hover:text-blue-600">Dashboard</a>
+          <a href="stok.html" class="hover:text-blue-600">Stok</a>
+          <a href="checkout.html" class="hover:text-blue-600">Checkout</a>
+          <a href="tracking.html" class="hover:text-blue-600">Tracking</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <input id="search" placeholder="Cari buku..." class="hidden sm:block p-2 border rounded" />
+        <a href="login.html" class="px-3 py-2 bg-blue-600 text-white rounded">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold">Koleksi Buku</h1>
+      <div class="text-sm text-gray-600">Total buku: <span id="totalCount">0</span></div>
+    </div>
+
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+  </main>
+
+  <footer class="bg-white border-t py-6">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+      © BookSmart Store — dibuat oleh ChatGPT
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    const grid = document.getElementById('grid');
+    const totalCount = document.getElementById('totalCount');
+    const search = document.getElementById('search');
+
+    function renderBooks(list){
+      grid.innerHTML = '';
+      list.forEach(b => {
+        const col = document.createElement('div');
+        col.className = 'bg-white rounded-lg shadow p-4 flex flex-col';
+        col.innerHTML = `
+          <img src="${b.img}" alt="${b.title}" class="w-full rounded-md mb-3 card-img" />
+          <h3 class="font-semibold text-lg">${b.title}</h3>
+          <p class="text-sm text-gray-600">${b.authors}</p>
+          <div class="mt-2 flex items-center justify-between">
+            <div class="text-sm text-gray-700">Stok: <span class="font-medium">${b.stock}</span></div>
+            <div class="text-lg font-bold">Rp ${b.price.toLocaleString()}</div>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <button class="addBtn flex-1 bg-blue-600 text-white py-2 rounded">Tambah ke keranjang</button>
+            <a href="stok.html?view=${b.id}" class="py-2 px-3 border rounded text-sm">Detail</a>
+          </div>
+        `;
+        grid.appendChild(col);
+        col.querySelector('.addBtn').addEventListener('click', ()=>{
+          alert(b.title + ' ditambahkan ke keranjang (demo)');
+        });
+      });
+      totalCount.textContent = list.length;
+    }
+
+    // initial render
+    renderBooks(books);
+
+    // search
+    search && search.addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase().trim();
+      renderBooks(books.filter(b => b.title.toLowerCase().includes(q) || b.authors.toLowerCase().includes(q)));
+    });
+  </script>
+</body>
+</html>

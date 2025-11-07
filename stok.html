@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BookSmart Store — Stok</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>.card-img{height:10rem;object-fit:cover}</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-bold text-blue-600">BookSmart</a>
+      <div class="flex items-center gap-3">
+        <a href="checkout.html" class="px-3 py-2 bg-blue-600 text-white rounded">Checkout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-4">Manajemen Stok (demo)</h1>
+
+    <form id="form" class="bg-white p-4 rounded shadow mb-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+      <input id="fTitle" placeholder="Judul" class="p-2 border rounded" required />
+      <input id="fAuthors" placeholder="Penulis" class="p-2 border rounded" required />
+      <input id="fStock" type="number" placeholder="Stok" class="p-2 border rounded" required />
+      <input id="fPrice" type="number" placeholder="Harga" class="p-2 border rounded" required />
+      <input id="fImg" placeholder="Path gambar (contoh: assets/nama.jpg)" class="p-2 border rounded col-span-2" />
+      <button class="col-span-2 bg-green-600 text-white py-2 rounded">Tambah Buku</button>
+    </form>
+
+    <div id="list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+  </main>
+
+  <footer class="bg-white border-t py-6">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-600">© BookSmart Store</div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    const list = document.getElementById('list');
+    const form = document.getElementById('form');
+    const fTitle = document.getElementById('fTitle');
+    const fAuthors = document.getElementById('fAuthors');
+    const fStock = document.getElementById('fStock');
+    const fPrice = document.getElementById('fPrice');
+    const fImg = document.getElementById('fImg');
+
+    function renderList(){
+      list.innerHTML = '';
+      books.forEach(b => {
+        const el = document.createElement('div');
+        el.className = 'bg-white p-4 rounded shadow flex gap-4 items-start';
+        el.innerHTML = `
+          <img src="${b.img}" class="w-28 rounded card-img" />
+          <div class="flex-1">
+            <h3 class="font-semibold">${b.title}</h3>
+            <p class="text-sm text-gray-600">${b.authors}</p>
+            <div class="mt-2">Stok: <strong>${b.stock}</strong></div>
+            <div>Harga: Rp ${b.price.toLocaleString()}</div>
+            <div class="mt-2 space-x-2">
+              <button class="decBtn px-2 py-1 border rounded">-</button>
+              <button class="incBtn px-2 py-1 border rounded">+</button>
+              <button class="delBtn px-2 py-1 bg-red-600 text-white rounded">Hapus</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(el);
+
+        el.querySelector('.incBtn').addEventListener('click', ()=>{ b.stock+=1; renderList(); });
+        el.querySelector('.decBtn').addEventListener('click', ()=>{ if(b.stock>0) b.stock-=1; renderList(); });
+        el.querySelector('.delBtn').addEventListener('click', ()=>{ const idx=books.findIndex(x=>x.id===b.id); books.splice(idx,1); renderList(); });
+      });
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const id = books.length ? Math.max(...books.map(x=>x.id))+1 : 1;
+      const imgPath = fImg.value.trim() || 'assets/kepemimpinan.jpg';
+      books.push({id, title: fTitle.value, authors: fAuthors.value, stock: parseInt(fStock.value||0), price: parseInt(fPrice.value||0), img: imgPath});
+      fTitle.value=''; fAuthors.value=''; fStock.value=''; fImg.value=''; fPrice.value='';
+      renderList();
+    });
+
+    renderList();
+  </script>
+</body>
+</html>

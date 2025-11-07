@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login — BookSmart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-blue-600 to-indigo-600 min-h-screen flex items-center justify-center">
+  <div class="bg-white rounded-lg p-8 shadow max-w-md w-full">
+    <h2 class="text-2xl font-bold mb-4">Masuk ke BookSmart</h2>
+    <form onsubmit="event.preventDefault(); alert('Login demo berhasil'); location.href='index.html' " class="grid gap-3">
+      <input required placeholder="Username" class="p-2 border rounded" />
+      <input required type="password" placeholder="Password" class="p-2 border rounded" />
+      <button class="bg-blue-600 text-white py-2 rounded mt-2">Masuk</button>
+    </form>
+  </div>
+</body>
+</html>
