@@ -8,6 +8,7 @@ TI.24.A.4
 Agung Nugroho S.Kom,M.Kom
 
 PEMOGRAMAN WEB 1
+
 Struktur folder: sesuai soal 
 index.html (login) dashboard.html (role-based: Admin/User) stok.html (admin only) checkout.html (user only) tracking.html (user only) css/style.css js/data.js <-- file data sesuai yang Anda berikan (tdk diubah) js/script.js assets/logo.png img/... Akun contoh (ada di data.js):
 
